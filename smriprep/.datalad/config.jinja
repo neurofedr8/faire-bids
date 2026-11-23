@@ -1,0 +1,30 @@
+# Commit dates must not disclose acquisition dates: faire fake-dates every commit and tag.
+[datalad]
+	fake-dates = true
+# ReproNim containers at a pinned release. To use another version of a tool, change `image`
+# to another image of this collection (and its version in dataset_description.json).
+[faire "collection.repronim"]
+	url = https://github.com/ReproNim/containers
+	path = code/containers
+	revision = 1.20260903.0
+# One session, processed on its own (sessionwise anatomical reference), so that sessions
+# merge without touching each other's files. FreeSurfer license from CI variable FS_LICENSE.
+[datalad "containers.smriprep"]
+	image = code/containers/images/bids/bids-smriprep--0.20.0.sif
+	cmdexec = APPTAINER_BIND="$FS_LICENSE:/opt/fs_license.txt" SINGULARITY_BIND="$FS_LICENSE:/opt/fs_license.txt" code/containers/scripts/singularity_cmd run {img} {cmd}
+	faire-sourcedata = {{ source }}
+	faire-input = sourcedata/{{ source }}/dataset_description.json
+	faire-input = sourcedata/{{ source }}/sub-{subject}/ses-{session}/anat/*
+	faire-input = sourcedata/{{ source }}/sub-{subject}/ses-{session}/anat/*_T1w.nii.gz
+	faire-output = sub-{subject}/ses-{session}
+	faire-output = sub-{subject}_ses-{session}*.html
+	faire-output = sourcedata/freesurfer/sub-{subject}_ses-{session}
+	faire-runner = {{ runner }}
+	faire-cmd = sourcedata/{{ source }} . participant --participant-label {subject} --session-label {session} --subject-anatomical-reference sessionwise --fs-license-file /opt/fs_license.txt -w /tmp/work --notrack
+[datalad "containers.bids-validator"]
+	image = code/containers/images/bids/bids-validator--3.0.1.sif
+	cmdexec = code/containers/scripts/singularity_cmd run {img} {cmd}
+	faire-check = blocking
+	faire-stage = collection
+	faire-stage = release
+	faire-cmd = .

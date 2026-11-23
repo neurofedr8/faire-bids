@@ -1,0 +1,18 @@
+# {{ title }}
+
+Raw BIDS dataset converted by faire from the sourcedata streams in `sourcedata/`, one
+session per pull request.
+
+| Rule | Source | Writes |
+|---|---|---|
+| `heudiconv` | `{{ dicom_stream }}` | `sub-*/ses-*` |
+{%- if physio_stream %}
+| `phys2bids` | `{{ physio_stream }}` | `sub-*/ses-*/func/*_physio.*` |
+{%- endif %}
+{%- if eyetrack_stream %}
+| `eye2bids` | `{{ eyetrack_stream }}` | `sub-*/ses-*/func/*_recording-eye*_physio.*` |
+{%- endif %}
+| `deface` | this dataset | `sub-*/ses-*/anat` (in place) |
+
+The bids-validator check blocks the merge of a session and the release.
+Containers and conversion heuristics come from `code/containers`.

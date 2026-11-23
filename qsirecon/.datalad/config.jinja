@@ -1,0 +1,36 @@
+# Commit dates must not disclose acquisition dates: faire fake-dates every commit and tag.
+[datalad]
+	fake-dates = true
+# ReproNim containers at a pinned release. To use another version of a tool, change `image`
+# to another image of this collection (and its version in dataset_description.json).
+[faire "collection.repronim"]
+	url = https://github.com/ReproNim/containers
+	path = code/containers
+	revision = 1.20260903.0
+# One session of the qsiprep dataset. *-hsvs specs also read the FreeSurfer outputs of
+# freesurfer_source. FreeSurfer license from CI variable FS_LICENSE.
+[datalad "containers.qsirecon"]
+	image = code/containers/images/bids/bids-qsirecon--26.0.0.sif
+	cmdexec = APPTAINER_BIND="$FS_LICENSE:/opt/fs_license.txt" SINGULARITY_BIND="$FS_LICENSE:/opt/fs_license.txt" code/containers/scripts/singularity_cmd run {img} {cmd}
+	faire-sourcedata = {{ source }}
+{%- if freesurfer_source %}
+	faire-sourcedata = {{ freesurfer_source }}
+{%- endif %}
+	faire-input = sourcedata/{{ source }}/dataset_description.json
+	faire-input = sourcedata/{{ source }}/sub-{subject}/ses-{session}/**
+{%- if freesurfer_source %}
+	faire-input = sourcedata/{{ freesurfer_source }}/sourcedata/freesurfer/sub-{subject}_ses-{session}/**
+{%- endif %}
+	faire-output = sub-{subject}/ses-{session}
+	faire-output = derivatives/*/sub-{subject}/ses-{session}
+	faire-output = derivatives/*/sub-{subject}_ses-{session}*.html
+	faire-runner = {{ runner }}
+	faire-cmd = sourcedata/{{ source }} . participant --participant-label {subject} --session-id {session} --input-type qsiprep --recon-spec {{ recon_spec }}{% if freesurfer_source %} --fs-subjects-dir sourcedata/{{ freesurfer_source }}/sourcedata/freesurfer{% endif %} --fs-license-file /opt/fs_license.txt -w /tmp/work --notrack
+# Reconstruction outputs are only partly covered by BIDS-Derivatives: advisory.
+[datalad "containers.bids-validator"]
+	image = code/containers/images/bids/bids-validator--3.0.1.sif
+	cmdexec = code/containers/scripts/singularity_cmd run {img} {cmd}
+	faire-check = advisory
+	faire-stage = collection
+	faire-stage = release
+	faire-cmd = .

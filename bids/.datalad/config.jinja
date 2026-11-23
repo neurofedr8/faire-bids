@@ -1,0 +1,57 @@
+# Commit dates must not disclose acquisition dates: faire fake-dates every commit and tag.
+[datalad]
+	fake-dates = true
+# Shared conversion containers. TODO: fill url and revision (also the image paths below).
+[faire "collection.tools"]
+	url = TODO
+	path = code/containers
+	revision = TODO
+# DICOM to BIDS, one session of the stream. heudiconv writes no top-level file (notop):
+# dataset_description.json and README ship with the template, participants.tsv and
+# sessions.tsv are maintained by faire.
+[datalad "containers.heudiconv"]
+	image = code/containers/images/TODO-heudiconv.sif
+	cmdexec = apptainer exec -e {img} {cmd}
+	faire-sourcedata = {{ dicom_stream }}
+	faire-input = sourcedata/{{ dicom_stream }}/*/sub-{subject}/ses-{session}/*
+	faire-output = sub-{subject}/ses-{session}
+	faire-output = .heudiconv/{subject}/ses-{session}
+	faire-cmd = heudiconv --files {inputs} -o . -f {{ heuristic }} -s {subject} -ss {session} -c dcm2niix -b notop --overwrite
+{%- if physio_stream %}
+# Physiological recordings to BIDS, next to the BOLD runs heudiconv wrote.
+[datalad "containers.phys2bids"]
+	image = code/containers/images/TODO-phys2bids.sif
+	cmdexec = apptainer exec -e {img} {cmd}
+	faire-sourcedata = {{ physio_stream }}
+	faire-input = sourcedata/{{ physio_stream }}/*/sub-{subject}/ses-{session}/*
+	faire-output = sub-{subject}/ses-{session}/func/*_physio.*
+	faire-after = heudiconv
+	faire-cmd = phys2bids -in {inputs} -outdir . -heur {{ phys2bids_heuristic }} -sub {subject} -ses {session}
+{%- endif %}
+{%- if eyetrack_stream %}
+# Eye-tracking recordings (EyeLink EDF) to BIDS.
+[datalad "containers.eye2bids"]
+	image = code/containers/images/TODO-eye2bids.sif
+	cmdexec = apptainer exec -e {img} {cmd}
+	faire-sourcedata = {{ eyetrack_stream }}
+	faire-input = sourcedata/{{ eyetrack_stream }}/*/sub-{subject}/ses-{session}/*.edf
+	faire-output = sub-{subject}/ses-{session}/func/*_recording-eye*_physio.*
+	faire-after = heudiconv
+	faire-cmd = eye2bids --input_file {inputs} --metadata_file {{ eye2bids_metadata }} --output_dir sub-{subject}/ses-{session}/func
+{%- endif %}
+# Defacing of the anatomical images heudiconv wrote, in place.
+[datalad "containers.deface"]
+	image = code/containers/images/TODO-deface.sif
+	cmdexec = apptainer exec -e {img} {cmd}
+	faire-sourcedata = .
+	faire-input = sub-{subject}/ses-{session}/anat/*_T1w.nii.gz
+	faire-output = sub-{subject}/ses-{session}/anat
+	faire-after = heudiconv
+	faire-cmd = TODO {inputs}
+[datalad "containers.bids-validator"]
+	image = code/containers/images/TODO-bids-validator.sif
+	cmdexec = apptainer exec -e {img} {cmd}
+	faire-check = blocking
+	faire-stage = collection
+	faire-stage = release
+	faire-cmd = bids-validator .

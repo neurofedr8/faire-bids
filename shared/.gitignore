@@ -1,0 +1,13 @@
+# Python and editor leftovers (e.g. from heuristics or checks run in the dataset)
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.DS_Store
+*~
+*.swp
+
+# BIDS-App scratch: working directories and nipype crash files are not data
+/work/
+/*_work/
+crash-*.pklz
+crash-*.txt

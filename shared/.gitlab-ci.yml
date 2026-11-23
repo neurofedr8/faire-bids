@@ -1,0 +1,32 @@
+# faire decides what runs from the branch: `faire plan` renders a child pipeline
+# (update on base, sync and downstream triggers on dev, tasks/status or checks on sessions).
+# Fixed: do not edit per dataset. CI variables: FAIRE_IMAGE, an image with faire (or a stock
+# image plus FAIRE_SETUP, shell commands installing it); FAIRE_GITLAB_TOKEN, used to push.
+# before_script is faire.tasks.BEFORE_SCRIPT (see there).
+workflow:
+  rules:
+  - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    when: never
+  - when: always
+faire-plan:
+  image: $FAIRE_IMAGE
+  before_script:
+  - sh -c "${FAIRE_SETUP:-true}"
+  - git fetch -q origin "+refs/heads/$CI_COMMIT_REF_NAME:refs/remotes/origin/$CI_COMMIT_REF_NAME"
+  - git checkout -B "$CI_COMMIT_REF_NAME" "refs/remotes/origin/$CI_COMMIT_REF_NAME"
+  - git remote set-url origin "$CI_SERVER_URL/$CI_PROJECT_PATH.git"
+  - git config --show-origin --name-only --get-regexp '^url\..*\.insteadof$' | while read -r where key;
+    do git config --file "${where#file:}" --unset-all "$key"; done || true
+  script:
+  - faire plan --ci-render gitlab > faire-pipeline.yml
+  artifacts:
+    paths:
+    - faire-pipeline.yml
+faire-run:
+  needs:
+  - faire-plan
+  trigger:
+    include:
+    - artifact: faire-pipeline.yml
+      job: faire-plan
+    strategy: depend

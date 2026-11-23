@@ -1,0 +1,7 @@
+{
+  "Name": "{{ title }}",
+  "BIDSVersion": "1.11.2",
+  "DatasetType": "derivative",
+  "GeneratedBy": [{"Name": "QSIRecon", "Version": "26.0.0"}],
+  "SourceDatasets": [{"URL": "../{{ source }}/"}{% if freesurfer_source %}, {"URL": "../{{ freesurfer_source }}/"}{% endif %}]
+}

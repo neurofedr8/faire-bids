@@ -1,0 +1,12 @@
+# {{ title }}
+
+QSIRecon 26.0.0 derivatives of `{{ source }}` (in `sourcedata/{{ source }}`), computed by faire
+one session per pull request, with the image of the ReproNim containers in `code/containers`.
+
+Reconstruction spec: `{{ recon_spec }}`.{% if freesurfer_source %} FreeSurfer outputs come from `{{ freesurfer_source }}`
+(in `sourcedata/{{ freesurfer_source }}`).{% endif %}
+
+- Each session is processed on its own, so sessions never write the same files.
+- The FreeSurfer license comes from the CI variable `FS_LICENSE` (type *file*).
+- Jobs run on runners tagged `{{ runner }}`.
+- The bids-validator check is advisory: reconstruction outputs are only partly covered by BIDS-Derivatives.

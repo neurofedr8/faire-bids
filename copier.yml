@@ -1,0 +1,70 @@
+# BIDS template collection: one copier template per dataset kind, chosen by `kind`.
+# A ma-DMP pins every dataset of a study to the same repository and tag, e.g.
+#   "template": {"repository": "<this repo>", "version": "v0.1.0", "data": {"kind": "fmriprep"}}
+# Changing `kind` of an existing dataset is a non-additive edit that faire refuses.
+_subdirectory: "{{ kind }}"
+_answers_file: .copier-answers.yml
+
+kind:
+  type: str
+  help: Dataset kind to render
+  choices: [bids, fmriprep, smriprep, qsiprep, qsirecon, bids-study]
+
+# --- bids (raw) ---
+dicom_stream:
+  type: str
+  default: dicoms
+  help: Stream holding the DICOMs converted by heudiconv
+  when: "{{ kind == 'bids' }}"
+heuristic:
+  type: str
+  default: code/containers/TODO/heuristic.py
+  help: Heudiconv heuristic, a path inside the container collection
+  when: "{{ kind == 'bids' }}"
+physio_stream:
+  type: str
+  default: physio
+  help: Stream holding physiological recordings converted by phys2bids (empty for none)
+  when: "{{ kind == 'bids' }}"
+phys2bids_heuristic:
+  type: str
+  default: code/containers/TODO/phys2bids_heuristic.py
+  help: phys2bids heuristic, a path inside the container collection
+  when: "{{ kind == 'bids' and physio_stream }}"
+eyetrack_stream:
+  type: str
+  default: eyetracking
+  help: Stream holding eye-tracking recordings converted by eye2bids (empty for none)
+  when: "{{ kind == 'bids' }}"
+eye2bids_metadata:
+  type: str
+  default: code/containers/TODO/eye2bids_metadata.yml
+  help: eye2bids metadata file, a path inside the container collection
+  when: "{{ kind == 'bids' and eyetrack_stream }}"
+
+# --- derivatives ---
+source:
+  type: str
+  default: "{{ 'qsiprep' if kind == 'qsirecon' else 'bids' }}"
+  help: Identifier of the dataset this one is derived from
+  when: "{{ kind not in ['bids', 'bids-study'] }}"
+output_resolution:
+  type: str
+  default: "2"
+  help: Isotropic voxel size (mm) of the preprocessed DWI
+  when: "{{ kind == 'qsiprep' }}"
+recon_spec:
+  type: str
+  default: mrtrix_multishell_msmt_ACT-hsvs
+  help: qsirecon reconstruction spec (built-in name or path)
+  when: "{{ kind == 'qsirecon' }}"
+freesurfer_source:
+  type: str
+  default: smriprep
+  help: Dataset providing FreeSurfer outputs for *-hsvs specs (empty for none)
+  when: "{{ kind == 'qsirecon' }}"
+runner:
+  type: str
+  default: TODO-runner
+  help: CI runner tag of the processing jobs
+  when: "{{ kind not in ['bids', 'bids-study'] }}"

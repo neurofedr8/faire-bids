@@ -1,0 +1,97 @@
+# SHA256 keys, as Hugging Face and most hosting expect; overrides DataLad's MD5E default.
+* annex.backend=SHA256E
+
+# Default: binary or large files to the annex, small text in git. Later lines win.
+* annex.largefiles=(not(mimetype=text/*)or(largerthan=100kb))
+
+# Metadata and text sidecars stay in git, whatever their size.
+*.json annex.largefiles=nothing
+*.yml annex.largefiles=nothing
+*.yaml annex.largefiles=nothing
+*.md annex.largefiles=nothing
+*.txt annex.largefiles=nothing
+*.tsv annex.largefiles=nothing
+*.bval annex.largefiles=nothing
+*.bvec annex.largefiles=nothing
+.bidsignore annex.largefiles=nothing
+CHANGES annex.largefiles=nothing
+README annex.largefiles=nothing
+LICENSE annex.largefiles=nothing
+code/** annex.largefiles=nothing
+*.tsv merge=union
+
+# Personal or acquisition-dated text goes to the annex.
+*_scans.tsv annex.largefiles=anything
+sub-*/**/*_events.tsv annex.largefiles=anything
+sub-*/**/*_beh.tsv annex.largefiles=anything
+.heudiconv/** annex.largefiles=anything
+
+# Raw BIDS data, any modality.
+# MRI, PET, physio, eye-tracking and motion (compressed tsv)
+*.nii annex.largefiles=anything
+*.nii.gz annex.largefiles=anything
+*.gz annex.largefiles=anything
+# EEG / iEEG (BrainVision .vhdr and .vmrk are small text and stay in git)
+*.edf annex.largefiles=anything
+*.bdf annex.largefiles=anything
+*.eeg annex.largefiles=anything
+*.set annex.largefiles=anything
+*.fdt annex.largefiles=anything
+*.nwb annex.largefiles=anything
+*.mefd/** annex.largefiles=anything
+# MEG: FIF, CTF directories, KIT/Yokogawa, BTi/4D, ITAB
+*.fif annex.largefiles=anything
+*.ds/** annex.largefiles=anything
+*.sqd annex.largefiles=anything
+*.con annex.largefiles=anything
+*.mrk annex.largefiles=anything
+*.raw annex.largefiles=anything
+*.mhd annex.largefiles=anything
+sub-*/**/meg/**/c,rf* annex.largefiles=anything
+# NIRS
+*.snirf annex.largefiles=anything
+# Microscopy
+*.tif annex.largefiles=anything
+*.tiff annex.largefiles=anything
+*.btf annex.largefiles=anything
+*.png annex.largefiles=anything
+*.jpg annex.largefiles=anything
+*.ome.zarr/** annex.largefiles=anything
+# Media and archives (stimuli, audio/video recordings, packed sourcedata)
+*.mp4 annex.largefiles=anything
+*.mkv annex.largefiles=anything
+*.avi annex.largefiles=anything
+*.wav annex.largefiles=anything
+*.mp3 annex.largefiles=anything
+*.flac annex.largefiles=anything
+*.tar annex.largefiles=anything
+*.tgz annex.largefiles=anything
+*.zip annex.largefiles=anything
+
+# Derivatives.
+# Surfaces, CIFTI, transforms, tractography and model outputs
+*.gii annex.largefiles=anything
+*.h5 annex.largefiles=anything
+*.x5 annex.largefiles=anything
+*.mgz annex.largefiles=anything
+*.mif annex.largefiles=anything
+*.mif.gz annex.largefiles=anything
+*.tck annex.largefiles=anything
+*.trk annex.largefiles=anything
+*.trk.gz annex.largefiles=anything
+*.trx annex.largefiles=anything
+*.fib.gz annex.largefiles=anything
+*.fz annex.largefiles=anything
+*.npy annex.largefiles=anything
+*.npz annex.largefiles=anything
+*.mat annex.largefiles=anything
+*.pkl annex.largefiles=anything
+*.vtk annex.largefiles=anything
+# Confounds and other time series are large text
+*_timeseries.tsv annex.largefiles=anything
+*_physio.tsv annex.largefiles=anything
+# Reports and figures render subject anatomy
+*.html annex.largefiles=anything
+*.svg annex.largefiles=anything
+# FreeSurfer subjects directory (surfaces, volumes, labels, stats of the participant)
+sourcedata/freesurfer/** annex.largefiles=anything

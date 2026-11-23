@@ -1,0 +1,475 @@
+{
+  "dmp": {
+    "title": "TODO study: BIDS neuroimaging data management plan",
+    "language": "eng",
+    "created": "2026-01-01T00:00:00Z",
+    "modified": "2026-01-01T00:00:00Z",
+    "ethical_issues_exist": "yes",
+    "dmp_id": {
+      "identifier": "https://example.org/TODO/dmp",
+      "type": "url"
+    },
+    "contact": {
+      "name": "TODO data steward",
+      "mbox": "steward@example.org",
+      "contact_id": {
+        "identifier": "https://orcid.org/0000-0000-0000-0000",
+        "type": "orcid"
+      }
+    },
+    "faire": {
+      "sample_entities": [
+        "subject",
+        "session"
+      ]
+    },
+    "dataset": [
+      {
+        "title": "MRI scanner exports",
+        "dataset_id": {
+          "identifier": "dicoms",
+          "type": "other"
+        },
+        "personal_data": "yes",
+        "sensitive_data": "yes",
+        "technical_resource": [
+          {
+            "name": "TODO MRI scanner",
+            "faire": {
+              "instrument_id": "TODOscanner",
+              "site": "a"
+            }
+          }
+        ],
+        "faire": {
+          "template": {
+            "repository": "https://example.org/TODO/faire-template-stream",
+            "version": "v0.1.0"
+          }
+        },
+        "distribution": [
+          {
+            "title": "Site storage",
+            "data_access": "closed",
+            "access_url": "ria+ssh://data.example.org/TODO-study/ria",
+            "host": {
+              "title": "TODO lab RIA store",
+              "url": "https://data.example.org"
+            },
+            "faire": {
+              "stage": "collection",
+              "wanted": "anything"
+            }
+          }
+        ]
+      },
+      {
+        "title": "Physiological recordings",
+        "dataset_id": {
+          "identifier": "physio",
+          "type": "other"
+        },
+        "personal_data": "yes",
+        "sensitive_data": "yes",
+        "technical_resource": [
+          {
+            "name": "TODO physiological recorder",
+            "faire": {
+              "instrument_id": "TODOphysio",
+              "site": "a"
+            }
+          }
+        ],
+        "faire": {
+          "template": {
+            "repository": "https://example.org/TODO/faire-template-stream",
+            "version": "v0.1.0"
+          }
+        },
+        "distribution": [
+          {
+            "title": "Site storage",
+            "data_access": "closed",
+            "access_url": "ria+ssh://data.example.org/TODO-study/ria",
+            "host": {
+              "title": "TODO lab RIA store",
+              "url": "https://data.example.org"
+            },
+            "faire": {
+              "stage": "collection",
+              "wanted": "anything"
+            }
+          }
+        ]
+      },
+      {
+        "title": "Eye-tracking recordings",
+        "dataset_id": {
+          "identifier": "eyetracking",
+          "type": "other"
+        },
+        "personal_data": "yes",
+        "sensitive_data": "yes",
+        "technical_resource": [
+          {
+            "name": "TODO eye tracker",
+            "faire": {
+              "instrument_id": "TODOeyetracker",
+              "site": "a"
+            }
+          }
+        ],
+        "faire": {
+          "template": {
+            "repository": "https://example.org/TODO/faire-template-stream",
+            "version": "v0.1.0"
+          }
+        },
+        "distribution": [
+          {
+            "title": "Site storage",
+            "data_access": "closed",
+            "access_url": "ria+ssh://data.example.org/TODO-study/ria",
+            "host": {
+              "title": "TODO lab RIA store",
+              "url": "https://data.example.org"
+            },
+            "faire": {
+              "stage": "collection",
+              "wanted": "anything"
+            }
+          }
+        ]
+      },
+      {
+        "title": "Raw BIDS",
+        "dataset_id": {
+          "identifier": "bids",
+          "type": "other"
+        },
+        "personal_data": "yes",
+        "sensitive_data": "no",
+        "related_identifier": [
+          {
+            "identifier": "dicoms",
+            "type": "other",
+            "relation_type": "IsDerivedFrom"
+          },
+          {
+            "identifier": "physio",
+            "type": "other",
+            "relation_type": "IsDerivedFrom"
+          },
+          {
+            "identifier": "eyetracking",
+            "type": "other",
+            "relation_type": "IsDerivedFrom"
+          }
+        ],
+        "faire": {
+          "template": {
+            "repository": "https://example.org/TODO/faire-templates-bids",
+            "version": "v0.1.0",
+            "data": {
+              "kind": "bids",
+              "dicom_stream": "dicoms",
+              "physio_stream": "physio",
+              "eyetrack_stream": "eyetracking"
+            }
+          },
+          "path": "rawbids"
+        },
+        "distribution": [
+          {
+            "title": "Site storage",
+            "data_access": "closed",
+            "access_url": "ria+ssh://data.example.org/TODO-study/ria",
+            "host": {
+              "title": "TODO lab RIA store",
+              "url": "https://data.example.org"
+            },
+            "faire": {
+              "stage": "collection",
+              "wanted": "anything"
+            }
+          },
+          {
+            "title": "Shared storage",
+            "data_access": "closed",
+            "access_url": "ria+ssh://data.example.org/TODO-study/ria",
+            "host": {
+              "title": "TODO lab RIA store",
+              "url": "https://data.example.org"
+            },
+            "faire": {
+              "stage": "accepted",
+              "wanted": "not metadata=distribution-restrictions=*"
+            }
+          }
+        ]
+      },
+      {
+        "title": "fMRIPrep derivatives",
+        "dataset_id": {
+          "identifier": "fmriprep",
+          "type": "other"
+        },
+        "personal_data": "yes",
+        "sensitive_data": "no",
+        "related_identifier": [
+          {
+            "identifier": "bids",
+            "type": "other",
+            "relation_type": "IsDerivedFrom"
+          }
+        ],
+        "faire": {
+          "template": {
+            "repository": "https://example.org/TODO/faire-templates-bids",
+            "version": "v0.1.0",
+            "data": {
+              "kind": "fmriprep",
+              "source": "bids",
+              "runner": "TODO-runner"
+            }
+          },
+          "path": "derivatives/fmriprep"
+        },
+        "distribution": [
+          {
+            "title": "Site storage",
+            "data_access": "closed",
+            "access_url": "ria+ssh://data.example.org/TODO-study/ria",
+            "host": {
+              "title": "TODO lab RIA store",
+              "url": "https://data.example.org"
+            },
+            "faire": {
+              "stage": "collection",
+              "wanted": "anything"
+            }
+          },
+          {
+            "title": "Shared storage",
+            "data_access": "closed",
+            "access_url": "ria+ssh://data.example.org/TODO-study/ria",
+            "host": {
+              "title": "TODO lab RIA store",
+              "url": "https://data.example.org"
+            },
+            "faire": {
+              "stage": "accepted",
+              "wanted": "not metadata=distribution-restrictions=*"
+            }
+          }
+        ]
+      },
+      {
+        "title": "sMRIPrep derivatives",
+        "dataset_id": {
+          "identifier": "smriprep",
+          "type": "other"
+        },
+        "personal_data": "yes",
+        "sensitive_data": "no",
+        "related_identifier": [
+          {
+            "identifier": "bids",
+            "type": "other",
+            "relation_type": "IsDerivedFrom"
+          }
+        ],
+        "faire": {
+          "template": {
+            "repository": "https://example.org/TODO/faire-templates-bids",
+            "version": "v0.1.0",
+            "data": {
+              "kind": "smriprep",
+              "source": "bids",
+              "runner": "TODO-runner"
+            }
+          },
+          "path": "derivatives/smriprep"
+        },
+        "distribution": [
+          {
+            "title": "Site storage",
+            "data_access": "closed",
+            "access_url": "ria+ssh://data.example.org/TODO-study/ria",
+            "host": {
+              "title": "TODO lab RIA store",
+              "url": "https://data.example.org"
+            },
+            "faire": {
+              "stage": "collection",
+              "wanted": "anything"
+            }
+          },
+          {
+            "title": "Shared storage",
+            "data_access": "closed",
+            "access_url": "ria+ssh://data.example.org/TODO-study/ria",
+            "host": {
+              "title": "TODO lab RIA store",
+              "url": "https://data.example.org"
+            },
+            "faire": {
+              "stage": "accepted",
+              "wanted": "not metadata=distribution-restrictions=*"
+            }
+          }
+        ]
+      },
+      {
+        "title": "QSIPrep derivatives",
+        "dataset_id": {
+          "identifier": "qsiprep",
+          "type": "other"
+        },
+        "personal_data": "yes",
+        "sensitive_data": "no",
+        "related_identifier": [
+          {
+            "identifier": "bids",
+            "type": "other",
+            "relation_type": "IsDerivedFrom"
+          }
+        ],
+        "faire": {
+          "template": {
+            "repository": "https://example.org/TODO/faire-templates-bids",
+            "version": "v0.1.0",
+            "data": {
+              "kind": "qsiprep",
+              "source": "bids",
+              "output_resolution": "2",
+              "runner": "TODO-runner"
+            }
+          },
+          "path": "derivatives/qsiprep"
+        },
+        "distribution": [
+          {
+            "title": "Site storage",
+            "data_access": "closed",
+            "access_url": "ria+ssh://data.example.org/TODO-study/ria",
+            "host": {
+              "title": "TODO lab RIA store",
+              "url": "https://data.example.org"
+            },
+            "faire": {
+              "stage": "collection",
+              "wanted": "anything"
+            }
+          },
+          {
+            "title": "Shared storage",
+            "data_access": "closed",
+            "access_url": "ria+ssh://data.example.org/TODO-study/ria",
+            "host": {
+              "title": "TODO lab RIA store",
+              "url": "https://data.example.org"
+            },
+            "faire": {
+              "stage": "accepted",
+              "wanted": "not metadata=distribution-restrictions=*"
+            }
+          }
+        ]
+      },
+      {
+        "title": "QSIRecon derivatives",
+        "dataset_id": {
+          "identifier": "qsirecon",
+          "type": "other"
+        },
+        "personal_data": "yes",
+        "sensitive_data": "no",
+        "related_identifier": [
+          {
+            "identifier": "qsiprep",
+            "type": "other",
+            "relation_type": "IsDerivedFrom"
+          },
+          {
+            "identifier": "smriprep",
+            "type": "other",
+            "relation_type": "IsDerivedFrom"
+          }
+        ],
+        "faire": {
+          "template": {
+            "repository": "https://example.org/TODO/faire-templates-bids",
+            "version": "v0.1.0",
+            "data": {
+              "kind": "qsirecon",
+              "source": "qsiprep",
+              "freesurfer_source": "smriprep",
+              "recon_spec": "mrtrix_multishell_msmt_ACT-hsvs",
+              "runner": "TODO-runner"
+            }
+          },
+          "path": "derivatives/qsirecon"
+        },
+        "distribution": [
+          {
+            "title": "Site storage",
+            "data_access": "closed",
+            "access_url": "ria+ssh://data.example.org/TODO-study/ria",
+            "host": {
+              "title": "TODO lab RIA store",
+              "url": "https://data.example.org"
+            },
+            "faire": {
+              "stage": "collection",
+              "wanted": "anything"
+            }
+          },
+          {
+            "title": "Shared storage",
+            "data_access": "closed",
+            "access_url": "ria+ssh://data.example.org/TODO-study/ria",
+            "host": {
+              "title": "TODO lab RIA store",
+              "url": "https://data.example.org"
+            },
+            "faire": {
+              "stage": "accepted",
+              "wanted": "not metadata=distribution-restrictions=*"
+            }
+          }
+        ]
+      },
+      {
+        "title": "TODO study superdataset",
+        "dataset_id": {
+          "identifier": "study",
+          "type": "other"
+        },
+        "personal_data": "no",
+        "sensitive_data": "no",
+        "faire": {
+          "template": {
+            "repository": "https://example.org/TODO/faire-templates-bids",
+            "version": "v0.1.0",
+            "data": {
+              "kind": "bids-study"
+            }
+          },
+          "path": "."
+        },
+        "distribution": [
+          {
+            "title": "Public release",
+            "data_access": "open",
+            "access_url": "ria+ssh://data.example.org/TODO-study/release",
+            "faire": {
+              "stage": "release",
+              "wanted": "anything"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

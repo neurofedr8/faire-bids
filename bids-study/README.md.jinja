@@ -1,0 +1,20 @@
+# {{ title }}
+
+The study dataset of a BIDS study
+([BIDS study dataset](https://bids-specification.readthedocs.io/en/stable/common-principles.html#study-dataset)):
+a DataLad superdataset holding every dataset of the study as a subdataset, at the path the
+ma-DMP (`dmp.json`) gives it.
+
+    rawbids/                 raw BIDS dataset (the only BIDS-compliant subdirectory)
+    derivatives/<pipeline>/  BIDS-Derivatives datasets, one per pipeline
+    sourcedata/              not populated: sourcedata streams are per-instrument datasets,
+                             each derived dataset links them under its own sourcedata/
+    dmp.json                 machine-actionable data management plan
+
+Get the study without its data, then the data you need:
+
+    datalad clone <this repository> study
+    datalad get -n -r study
+    datalad get study/derivatives/fmriprep/sub-01
+
+The `dev` branch follows accepted data; `rel/<version>` and `main` hold releases.

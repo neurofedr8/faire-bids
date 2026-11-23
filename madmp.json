@@ -54,9 +54,9 @@
           {
             "title": "Site storage",
             "data_access": "closed",
-            "access_url": "ria+ssh://data.example.org/TODO-study/ria",
+            "access_url": "ria+file:///data/faire-ria-store",
             "host": {
-              "title": "TODO lab RIA store",
+              "title": "lab RIA store",
               "url": "https://data.example.org"
             },
             "faire": {
@@ -96,9 +96,9 @@
           {
             "title": "Site storage",
             "data_access": "closed",
-            "access_url": "ria+ssh://data.example.org/TODO-study/ria",
+            "access_url": "ria+file:///data/faire-ria-store",
             "host": {
-              "title": "TODO lab RIA store",
+              "title": "lab RIA store",
               "url": "https://data.example.org"
             },
             "faire": {
@@ -138,9 +138,9 @@
           {
             "title": "Site storage",
             "data_access": "closed",
-            "access_url": "ria+ssh://data.example.org/TODO-study/ria",
+            "access_url": "ria+file:///data/faire-ria-store",
             "host": {
-              "title": "TODO lab RIA store",
+              "title": "lab RIA store",
               "url": "https://data.example.org"
             },
             "faire": {
@@ -192,9 +192,9 @@
           {
             "title": "Site storage",
             "data_access": "closed",
-            "access_url": "ria+ssh://data.example.org/TODO-study/ria",
+            "access_url": "ria+file:///data/faire-ria-store",
             "host": {
-              "title": "TODO lab RIA store",
+              "title": "lab RIA store",
               "url": "https://data.example.org"
             },
             "faire": {
@@ -205,9 +205,9 @@
           {
             "title": "Shared storage",
             "data_access": "closed",
-            "access_url": "ria+ssh://data.example.org/TODO-study/ria",
+            "access_url": "ria+file:///data/faire-ria-store",
             "host": {
-              "title": "TODO lab RIA store",
+              "title": "lab RIA store",
               "url": "https://data.example.org"
             },
             "faire": {
@@ -248,9 +248,9 @@
           {
             "title": "Site storage",
             "data_access": "closed",
-            "access_url": "ria+ssh://data.example.org/TODO-study/ria",
+            "access_url": "ria+file:///data/faire-ria-store",
             "host": {
-              "title": "TODO lab RIA store",
+              "title": "lab RIA store",
               "url": "https://data.example.org"
             },
             "faire": {
@@ -261,9 +261,9 @@
           {
             "title": "Shared storage",
             "data_access": "closed",
-            "access_url": "ria+ssh://data.example.org/TODO-study/ria",
+            "access_url": "ria+file:///data/faire-ria-store",
             "host": {
-              "title": "TODO lab RIA store",
+              "title": "lab RIA store",
               "url": "https://data.example.org"
             },
             "faire": {
@@ -304,9 +304,9 @@
           {
             "title": "Site storage",
             "data_access": "closed",
-            "access_url": "ria+ssh://data.example.org/TODO-study/ria",
+            "access_url": "ria+file:///data/faire-ria-store",
             "host": {
-              "title": "TODO lab RIA store",
+              "title": "lab RIA store",
               "url": "https://data.example.org"
             },
             "faire": {
@@ -317,9 +317,9 @@
           {
             "title": "Shared storage",
             "data_access": "closed",
-            "access_url": "ria+ssh://data.example.org/TODO-study/ria",
+            "access_url": "ria+file:///data/faire-ria-store",
             "host": {
-              "title": "TODO lab RIA store",
+              "title": "lab RIA store",
               "url": "https://data.example.org"
             },
             "faire": {
@@ -361,9 +361,9 @@
           {
             "title": "Site storage",
             "data_access": "closed",
-            "access_url": "ria+ssh://data.example.org/TODO-study/ria",
+            "access_url": "ria+file:///data/faire-ria-store",
             "host": {
-              "title": "TODO lab RIA store",
+              "title": "lab RIA store",
               "url": "https://data.example.org"
             },
             "faire": {
@@ -374,9 +374,9 @@
           {
             "title": "Shared storage",
             "data_access": "closed",
-            "access_url": "ria+ssh://data.example.org/TODO-study/ria",
+            "access_url": "ria+file:///data/faire-ria-store",
             "host": {
-              "title": "TODO lab RIA store",
+              "title": "lab RIA store",
               "url": "https://data.example.org"
             },
             "faire": {
@@ -424,9 +424,9 @@
           {
             "title": "Site storage",
             "data_access": "closed",
-            "access_url": "ria+ssh://data.example.org/TODO-study/ria",
+            "access_url": "ria+file:///data/faire-ria-store",
             "host": {
-              "title": "TODO lab RIA store",
+              "title": "lab RIA store",
               "url": "https://data.example.org"
             },
             "faire": {
@@ -437,9 +437,9 @@
           {
             "title": "Shared storage",
             "data_access": "closed",
-            "access_url": "ria+ssh://data.example.org/TODO-study/ria",
+            "access_url": "ria+file:///data/faire-ria-store",
             "host": {
-              "title": "TODO lab RIA store",
+              "title": "lab RIA store",
               "url": "https://data.example.org"
             },
             "faire": {
@@ -450,7 +450,7 @@
         ]
       },
       {
-        "title": "TODO study superdataset",
+        "title": "my BIDS-study dataset",
         "dataset_id": {
           "identifier": "study",
           "type": "other"

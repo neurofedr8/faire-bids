@@ -3,15 +3,21 @@
 	fake-dates = true
 # Shared conversion containers. TODO: fill url and revision (also the image paths below).
 [faire "collection.tools"]
-	url = TODO
+	url = https://git.cpipstudy.org/ni-dataops/bids-containers
 	path = code/containers
-	revision = TODO
+	revision = main
+# ReproNim containers at a pinned release. To use another version of a tool, change `image`
+# to another image of this collection (and its version in dataset_description.json).
+[faire "collection.repronim"]
+	url = https://github.com/ReproNim/containers
+	path = code/repronim_containers
+	revision = 1.20260903.0
 # DICOM to BIDS, one session of the stream. heudiconv writes no top-level file (notop):
 # dataset_description.json and README ship with the template, participants.tsv and
 # sessions.tsv are maintained by faire.
 [datalad "containers.heudiconv"]
-	image = code/containers/images/TODO-heudiconv.sif
-	cmdexec = apptainer exec -e {img} {cmd}
+	image = code/containers/images/heudiconv.sif
+	cmdexec = {img_dspath}/scripts/singularity_cmd exec --no-home --cleanenv --bind /tmp:/root/.cache/datalad {img} {cmd}
 	faire-sourcedata = {{ dicom_stream }}
 	faire-input = sourcedata/{{ dicom_stream }}/*/sub-{subject}/ses-{session}/*
 	faire-output = sub-{subject}/ses-{session}
@@ -20,7 +26,7 @@
 {%- if physio_stream %}
 # Physiological recordings to BIDS, next to the BOLD runs heudiconv wrote.
 [datalad "containers.phys2bids"]
-	image = code/containers/images/TODO-phys2bids.sif
+	image = code/containers/images/phys2bids.sif
 	cmdexec = apptainer exec -e {img} {cmd}
 	faire-sourcedata = {{ physio_stream }}
 	faire-input = sourcedata/{{ physio_stream }}/*/sub-{subject}/ses-{session}/*
@@ -31,7 +37,7 @@
 {%- if eyetrack_stream %}
 # Eye-tracking recordings (EyeLink EDF) to BIDS.
 [datalad "containers.eye2bids"]
-	image = code/containers/images/TODO-eye2bids.sif
+	image = code/containers/images/eye2bids.sif
 	cmdexec = apptainer exec -e {img} {cmd}
 	faire-sourcedata = {{ eyetrack_stream }}
 	faire-input = sourcedata/{{ eyetrack_stream }}/*/sub-{subject}/ses-{session}/*.edf
@@ -41,15 +47,15 @@
 {%- endif %}
 # Defacing of the anatomical images heudiconv wrote, in place.
 [datalad "containers.deface"]
-	image = code/containers/images/TODO-deface.sif
-	cmdexec = apptainer exec -e {img} {cmd}
+	image = code/containers/images/skullduggery.sif
+	cmdexec = apptainer run --no-home --cleanenv --bind /tmp:/root/.cache {img} {cmd}
 	faire-sourcedata = .
-	faire-input = sub-{subject}/ses-{session}/anat/*_T1w.nii.gz
+	faire-input = sub-{subject}/ses-{session}/anat/*.nii.gz
 	faire-output = sub-{subject}/ses-{session}/anat
 	faire-after = heudiconv
-	faire-cmd = TODO {inputs}
+	faire-cmd = skullduggery {inputs}
 [datalad "containers.bids-validator"]
-	image = code/containers/images/TODO-bids-validator.sif
+	image = code/repronim_containers/images/bids/bids-validator--3.0.2.sif
 	cmdexec = apptainer exec -e {img} {cmd}
 	faire-check = blocking
 	faire-stage = collection

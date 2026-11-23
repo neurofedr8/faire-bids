@@ -8,7 +8,37 @@ _answers_file: .copier-answers.yml
 kind:
   type: str
   help: Dataset kind to render
-  choices: [bids, fmriprep, smriprep, qsiprep, qsirecon, bids-study]
+  choices: [dicom-stream, physio-stream, eyetracking-stream, bids, fmriprep, smriprep, qsiprep,
+            qsirecon, bids-study]
+
+# --- streams (faire provides dataset_id, title, site, instrument_id, instance) ---
+# The placement must match the input patterns of the bids rules:
+# sourcedata/<stream>/<instance>/sub-{subject}/ses-{session}/...
+item_pattern:
+  type: str
+  default: 'sub-(?P<subject>[A-Za-z0-9]+)_ses-(?P<session>[A-Za-z0-9]+)(?P<pilot>_pilot)?'
+  help: >-
+    Regex matching the name of a received item; named groups are the sample entities,
+    plus optional `instrument` and `pilot`
+  when: "{{ kind.endswith('-stream') }}"
+instrument_from:
+  type: str
+  default: "{{ 'dicom' if kind == 'dicom-stream' else 'single' }}"
+  choices: [dicom, name, single]
+  help: >-
+    How the instrument of an item is found: DICOM headers, the `instrument` group of
+    item_pattern, or the stream's only instrument
+  when: "{{ kind.endswith('-stream') }}"
+dicom_instrument_format:
+  type: str
+  default: '{ManufacturerModelName}{DeviceSerialNumber}'
+  help: Instrument identifier built from DICOM header fields (non-alphanumerics removed)
+  when: "{{ kind.endswith('-stream') and instrument_from == 'dicom' }}"
+place_format:
+  type: str
+  default: 'sub-{subject}/ses-{session}'
+  help: Path of an item in the stream instance, from its entities
+  when: "{{ kind.endswith('-stream') }}"
 
 # --- bids (raw) ---
 dicom_stream:
@@ -47,7 +77,7 @@ source:
   type: str
   default: "{{ 'qsiprep' if kind == 'qsirecon' else 'bids' }}"
   help: Identifier of the dataset this one is derived from
-  when: "{{ kind not in ['bids', 'bids-study'] }}"
+  when: "{{ kind in ['fmriprep', 'smriprep', 'qsiprep', 'qsirecon'] }}"
 output_resolution:
   type: str
   default: "2"
@@ -67,4 +97,4 @@ runner:
   type: str
   default: TODO-runner
   help: CI runner tag of the processing jobs
-  when: "{{ kind not in ['bids', 'bids-study'] }}"
+  when: "{{ kind in ['fmriprep', 'smriprep', 'qsiprep', 'qsirecon'] }}"

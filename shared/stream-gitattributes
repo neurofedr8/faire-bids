@@ -1,0 +1,6 @@
+# SHA256 keys, as Hugging Face and most hosting expect; overrides DataLad's MD5E default.
+* annex.backend=SHA256E
+# Received raw data is personal: everything to the annex, except the stream's own files.
+* annex.largefiles=anything
+README.md annex.largefiles=nothing
+.faire/** annex.largefiles=nothing

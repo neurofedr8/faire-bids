@@ -1,0 +1,8 @@
+# Settings of .faire/heuristic.py, rendered from the template answers (see that file).
+item_pattern: '{{ item_pattern | replace("'", "''") }}'
+instrument_from: {{ instrument_from }}
+{%- if instrument_from == 'dicom' %}
+dicom_instrument_format: '{{ dicom_instrument_format | replace("'", "''") }}'
+{%- endif %}
+place_format: '{{ place_format | replace("'", "''") }}'
+single_instrument: '{{ instrument_id }}'

@@ -1,0 +1,3 @@
+# Commit dates must not disclose acquisition dates: faire fake-dates every commit and tag.
+[datalad]
+	fake-dates = true

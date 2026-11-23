@@ -5,6 +5,9 @@ answer selects the template:
 
 | `kind` | Dataset | Containers | bids-validator |
 |---|---|---|---|
+| `dicom-stream` | DICOM exports, one folder per session; instrument from the DICOM headers | none | none |
+| `physio-stream` | physiological recordings, one folder per session | none | none |
+| `eyetracking-stream` | eye-tracking EDF files, one folder per session | none | none |
 | `bids` | raw BIDS from DICOM (heudiconv), physio (phys2bids) and eye-tracking (eye2bids) streams, defaced | shared conversion collection (TODO) | blocking |
 | `fmriprep` | fMRIPrep derivatives of `bids` | ReproNim | blocking |
 | `smriprep` | sMRIPrep derivatives of `bids` | ReproNim | blocking |
@@ -20,10 +23,29 @@ The study follows the BIDS study layout: raw BIDS at path `rawbids`, each deriva
 have no path in the superdataset; each derived dataset links them under its own
 `sourcedata/`.
 
+## Streams
+
+`faire index <stream> <directory>` adds each top-level entry of the directory as one item,
+using `.faire/heuristic.py` (static, `shared/heuristic.py`), configured by `.faire/heuristic.yml`, rendered
+from these answers:
+
+- `item_pattern`: regex on the item name; its named groups are the sample entities, plus
+  optional `instrument` and `pilot`. Default: `sub-<subject>_ses-<session>[_pilot]`.
+- `instrument_from`: `dicom` (default for `dicom-stream`; formats `dicom_instrument_format`,
+  default `{ManufacturerModelName}{DeviceSerialNumber}`, needs `pydicom` where indexing
+  runs), `name` (the `instrument` group), or `single` (default otherwise; the stream's only
+  instrument).
+- `place_format`: placement in the instance, default `sub-{subject}/ses-{session}`. The
+  `bids` rules read `sourcedata/<stream>/*/sub-{subject}/ses-{session}/*`: change both
+  together.
+
+Instrument identifiers in the ma-DMP must be what the heuristic returns.
+
 ## Use from a ma-DMP
 
 [`madmp.json`](madmp.json) is a starting ma-DMP for a whole study: DICOM, physio and
-eye-tracking streams, raw BIDS, the four derivatives and the superdataset. Replace every
+eye-tracking streams, raw BIDS, the four derivatives and the study dataset, all from this
+collection. Replace every
 `TODO` and `example.org` value, and drop the streams and derivatives the study does not
 have (with their answers and sources). Check it with `faire validate madmp.json`.
 
@@ -58,5 +80,7 @@ or eye-tracking stream empty to drop its rule.
 - Default heuristics (`heuristic`, `phys2bids_heuristic`, `eye2bids_metadata`) in that
   collection.
 
-Layout: `copier.yml` holds the questions of every kind; `shared/` holds the files every
-template uses, linked from each template directory.
+Layout: `copier.yml` holds the questions of every kind; `shared/` holds the files several
+templates use, linked from each template directory. Shared dotfiles are linked as
+`.gitignore.jinja` and `.gitattributes.jinja`: git does not follow symlinked `.gitignore`
+and `.gitattributes`, and the suffix keeps them from applying to this repository.

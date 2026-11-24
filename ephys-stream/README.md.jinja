@@ -1,0 +1,12 @@
+# {{ title }}: {{ instance }}
+
+Electrophysiology recordings (MEG, EEG, iEEG) from instrument `{{ instrument_id }}` at site `{{ site }}`, stream `{{ dataset_id }}`
+of the study. `faire index {{ dataset_id }} <directory>` adds received items with the
+heuristic in `.faire/heuristic.py`:
+
+- one item per top-level entry, named like `{{ item_pattern }}`;
+- placed at `{{ place_format }}`, the recordings of one session, of any of the three modalities;
+- instrument {% if instrument_from == 'dicom' %}read from the DICOM headers as `{{ dicom_instrument_format }}`{% elif instrument_from == 'name' %}from the `instrument` group of the name{% else %}always `{{ instrument_id }}` (single-instrument stream){% endif %}.
+
+Everything is annexed and commits carry fake dates. The raw BIDS dataset converts it with
+MNE-BIDS, which decides the modality (`meg`, `eeg` or `ieeg`) of each file.

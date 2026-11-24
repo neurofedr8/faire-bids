@@ -8,7 +8,7 @@ _answers_file: .copier-answers.yml
 kind:
   type: str
   help: Dataset kind to render
-  choices: [dicom-stream, physio-stream, eyetracking-stream, bids, fmriprep, smriprep, qsiprep,
+  choices: [dicom-stream, physio-stream, eyetracking-stream, mrs-stream, ephys-stream, bids, fmriprep, smriprep, qsiprep,
             qsirecon, bids-study]
 
 # --- streams (faire provides dataset_id, title, site, instrument_id, instance) ---
@@ -71,6 +71,29 @@ eye2bids_metadata:
   default: code/containers/TODO/eye2bids_metadata.yml
   help: eye2bids metadata file, a path inside the container collection
   when: "{{ kind == 'bids' and eyetrack_stream }}"
+mrs_stream:
+  type: str
+  default: raw-mrs
+  help: Stream holding raw MRS data converted by spec2nii (empty for none)
+  when: "{{ kind == 'bids' }}"
+mrs_format:
+  type: str
+  default: twix
+  choices: [twix, dicom, philips, philips_dicom, ge, rda, uih]
+  help: spec2nii subcommand, by format of the raw MRS files
+  when: "{{ kind == 'bids' and mrs_stream }}"
+ephys_stream:
+  type: str
+  default: ephys
+  help: Stream holding MEG, EEG and iEEG recordings converted by MNE-BIDS (empty for none)
+  when: "{{ kind == 'bids' }}"
+ephys_script:
+  type: str
+  default: code/containers/TODO/ephys_to_bids.py
+  help: >-
+    Script calling mne_bids.write_raw_bids for each recording (subject, session and
+    task from the file name, datatype from its content), a path inside the container collection
+  when: "{{ kind == 'bids' and ephys_stream }}"
 
 # --- derivatives ---
 source:

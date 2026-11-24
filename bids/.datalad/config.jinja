@@ -45,6 +45,30 @@
 	faire-after = heudiconv
 	faire-cmd = eye2bids --input_file {inputs} --metadata_file {{ eye2bids_metadata }} --output_dir sub-{subject}/ses-{session}/func
 {%- endif %}
+{%- if mrs_stream %}
+# Raw MRS to NIfTI-MRS with a BIDS sidecar; the output names follow the input names.
+[datalad "containers.spec2nii"]
+	image = code/containers/images/spec2nii.sif
+	cmdexec = apptainer exec -e {img} {cmd}
+	faire-sourcedata = {{ mrs_stream }}
+	faire-input = sourcedata/{{ mrs_stream }}/*/sub-{subject}/ses-{session}/*
+	faire-output = sub-{subject}/ses-{session}/mrs/*
+	faire-cmd = spec2nii {{ mrs_format }} -j -o sub-{subject}/ses-{session}/mrs {inputs}
+{%- endif %}
+{%- if ephys_stream %}
+# MEG, EEG and iEEG recordings of one stream to BIDS. The script writes only the session's
+# files (no participants.tsv, dataset_description.json or README: faire and the template own them).
+[datalad "containers.mne-bids"]
+	image = code/containers/images/mne-bids.sif
+	cmdexec = apptainer exec -e {img} {cmd}
+	faire-sourcedata = {{ ephys_stream }}
+	faire-input = sourcedata/{{ ephys_stream }}/*/sub-{subject}/ses-{session}/*
+	faire-output = sub-{subject}/ses-{session}/meg
+	faire-output = sub-{subject}/ses-{session}/eeg
+	faire-output = sub-{subject}/ses-{session}/ieeg
+	faire-after = heudiconv
+	faire-cmd = python {{ ephys_script }} --bids-root . --subject {subject} --session {session} {inputs}
+{%- endif %}
 # Defacing of the anatomical images heudiconv wrote, in place.
 [datalad "containers.deface"]
 	image = code/containers/images/skullduggery.sif

@@ -12,6 +12,12 @@ session per pull request.
 {%- if eyetrack_stream %}
 | `eye2bids` | `{{ eyetrack_stream }}` | `sub-*/ses-*/func/*_recording-eye*_physio.*` |
 {%- endif %}
+{%- if mrs_stream %}
+| `spec2nii` | `{{ mrs_stream }}` | `sub-*/ses-*/mrs/*` |
+{%- endif %}
+{%- if ephys_stream %}
+| `mne-bids` | `{{ ephys_stream }}` | `sub-*/ses-*/{meg,eeg,ieeg}` |
+{%- endif %}
 | `deface` | this dataset | `sub-*/ses-*/anat` (in place) |
 
 The bids-validator check blocks the merge of a session and the release.

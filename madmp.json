@@ -151,6 +151,90 @@
         ]
       },
       {
+        "title": "Raw MRS data",
+        "dataset_id": {
+          "identifier": "raw-mrs",
+          "type": "other"
+        },
+        "personal_data": "yes",
+        "sensitive_data": "yes",
+        "technical_resource": [
+          {
+            "name": "TODO MRS scanner",
+            "faire": {
+              "instrument_id": "TODOmrs",
+              "site": "a"
+            }
+          }
+        ],
+        "faire": {
+          "template": {
+            "repository": "https://github.com/neurofedr8/faire-bids.git",
+            "version": "v0.1.0",
+            "data": {
+              "kind": "mrs-stream"
+            }
+          }
+        },
+        "distribution": [
+          {
+            "title": "Site storage",
+            "data_access": "closed",
+            "access_url": "ria+file:///data/faire-ria-store",
+            "host": {
+              "title": "lab RIA store",
+              "url": "https://data.example.org"
+            },
+            "faire": {
+              "stage": "collection",
+              "wanted": "anything"
+            }
+          }
+        ]
+      },
+      {
+        "title": "MEG/EEG/iEEG recordings",
+        "dataset_id": {
+          "identifier": "ephys",
+          "type": "other"
+        },
+        "personal_data": "yes",
+        "sensitive_data": "yes",
+        "technical_resource": [
+          {
+            "name": "TODO electrophysiology system",
+            "faire": {
+              "instrument_id": "TODOephys",
+              "site": "a"
+            }
+          }
+        ],
+        "faire": {
+          "template": {
+            "repository": "https://github.com/neurofedr8/faire-bids.git",
+            "version": "v0.1.0",
+            "data": {
+              "kind": "ephys-stream"
+            }
+          }
+        },
+        "distribution": [
+          {
+            "title": "Site storage",
+            "data_access": "closed",
+            "access_url": "ria+file:///data/faire-ria-store",
+            "host": {
+              "title": "lab RIA store",
+              "url": "https://data.example.org"
+            },
+            "faire": {
+              "stage": "collection",
+              "wanted": "anything"
+            }
+          }
+        ]
+      },
+      {
         "title": "Raw BIDS",
         "dataset_id": {
           "identifier": "bids",
@@ -173,6 +257,16 @@
             "identifier": "eyetracking",
             "type": "other",
             "relation_type": "IsDerivedFrom"
+          },
+          {
+            "identifier": "raw-mrs",
+            "type": "other",
+            "relation_type": "IsDerivedFrom"
+          },
+          {
+            "identifier": "ephys",
+            "type": "other",
+            "relation_type": "IsDerivedFrom"
           }
         ],
         "faire": {
@@ -183,7 +277,9 @@
               "kind": "bids",
               "dicom_stream": "dicoms",
               "physio_stream": "physio",
-              "eyetrack_stream": "eyetracking"
+              "eyetrack_stream": "eyetracking",
+              "mrs_stream": "raw-mrs",
+              "ephys_stream": "ephys"
             }
           },
           "path": "rawbids"

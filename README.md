@@ -8,7 +8,9 @@ answer selects the template:
 | `dicom-stream` | DICOM exports, one folder per session; instrument from the DICOM headers | none | none |
 | `physio-stream` | physiological recordings, one folder per session | none | none |
 | `eyetracking-stream` | eye-tracking EDF files, one folder per session | none | none |
-| `bids` | raw BIDS from DICOM (heudiconv), physio (phys2bids) and eye-tracking (eye2bids) streams, defaced | shared conversion collection (TODO) | blocking |
+| `mrs-stream` | raw MRS files, one folder per session | none | none |
+| `ephys-stream` | MEG, EEG and iEEG recordings of any mix, one folder per session | none | none |
+| `bids` | raw BIDS from DICOM (heudiconv), physio (phys2bids), eye-tracking (eye2bids), MRS (spec2nii) and MEG/EEG/iEEG (MNE-BIDS) streams, defaced | shared conversion collection (TODO) | blocking |
 | `fmriprep` | fMRIPrep derivatives of `bids` | ReproNim | blocking |
 | `smriprep` | sMRIPrep derivatives of `bids` | ReproNim | blocking |
 | `qsiprep` | QSIPrep derivatives of `bids` | ReproNim | blocking |
@@ -43,8 +45,8 @@ Instrument identifiers in the ma-DMP must be what the heuristic returns.
 
 ## Use from a ma-DMP
 
-[`madmp.json`](madmp.json) is a starting ma-DMP for a whole study: DICOM, physio and
-eye-tracking streams, raw BIDS, the four derivatives and the study dataset, all from this
+[`madmp.json`](madmp.json) is a starting ma-DMP for a whole study: DICOM, physio,
+eye-tracking, raw MRS and electrophysiology streams, raw BIDS, the four derivatives and the study dataset, all from this
 collection. Replace every
 `TODO` and `example.org` value, and drop the streams and derivatives the study does not
 have (with their answers and sources). Check it with `faire validate madmp.json`.
@@ -64,8 +66,8 @@ Pin every dataset of the study to the same tag and select its kind:
 
 Sources in the ma-DMP (`IsDerivedFrom`) must match the template answers: `source`, and for
 `qsirecon` with a `*-hsvs` spec, `freesurfer_source`. The streams of `bids`
-(`dicom_stream`, `physio_stream`, `eyetrack_stream`) must be its sources; leave the physio
-or eye-tracking stream empty to drop its rule.
+(`dicom_stream`, `physio_stream`, `eyetrack_stream`, `mrs_stream`, `ephys_stream`) must be its sources; leave the physio,
+eye-tracking, MRS or electrophysiology stream empty to drop its rule.
 
 ## CI requirements
 
@@ -75,9 +77,9 @@ or eye-tracking stream empty to drop its rule.
 ## Before a first release
 
 - `bids/.datalad/config`: URL and revision of the shared conversion collection, image paths
-  of heudiconv, phys2bids, eye2bids, bids-validator and the defacing tool, and the defacing
+  of heudiconv, phys2bids, eye2bids, spec2nii, mne-bids, bids-validator and the defacing tool, and the defacing
   command.
-- Default heuristics (`heuristic`, `phys2bids_heuristic`, `eye2bids_metadata`) in that
+- Default heuristics (`heuristic`, `phys2bids_heuristic`, `eye2bids_metadata`, `ephys_script`) in that
   collection.
 
 Layout: `copier.yml` holds the questions of every kind; `shared/` holds the files several

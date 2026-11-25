@@ -58,8 +58,8 @@
 {%- if ephys_stream %}
 # MEG, EEG and iEEG recordings of one stream to BIDS. The script writes only the session's
 # files (no participants.tsv, dataset_description.json or README: faire and the template own them).
-[datalad "containers.mne-bids"]
-	image = code/containers/images/mne-bids.sif
+[datalad "containers.mieeg2bids"]
+	image = code/containers/images/mieeg2bids.sif
 	cmdexec = apptainer exec -e {img} {cmd}
 	faire-sourcedata = {{ ephys_stream }}
 	faire-input = sourcedata/{{ ephys_stream }}/*/sub-{subject}/ses-{session}/*
